@@ -14,5 +14,6 @@
 <div>
     <label>니 이름은 ${name} </label>
 </div>
+<div>너의 <a href="list-todos">투두리스트</a>로 이동</div>
 </body>
 </html>
