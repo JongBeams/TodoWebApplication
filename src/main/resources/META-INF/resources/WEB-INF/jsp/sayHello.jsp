@@ -1,8 +1,8 @@
 <html>
 <head>
-    <title> JSP로 HTML 페이지 연습</title>
+    <title> JSP HTML Page Learn</title>
 </head>
 <body>
-JSP로 HTML 페이지 연습
+JSP HTML Page Learn
 </body>
 </html>
