@@ -14,6 +14,5 @@
 <div>
     <label>니 이름은 ${name} </label>
 </div>
-<div>니 비번은 ${password} </div>
 </body>
 </html>

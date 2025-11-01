@@ -9,6 +9,7 @@
 <h1>장종범 웹</h1>
 <h2>로그인</h2>
 
+<pre>${errorMessage}</pre>
 <form action="/login" method="post">
     <div>
         <label for="id">ID : </label>
