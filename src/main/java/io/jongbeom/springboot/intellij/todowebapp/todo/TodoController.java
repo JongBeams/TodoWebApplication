@@ -1,6 +1,8 @@
 package io.jongbeom.springboot.intellij.todowebapp.todo;
 
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -26,11 +28,14 @@ public class TodoController {
     // 로그인 성공시 하이퍼링크 클릭으로 사용
     @RequestMapping("list-todos")
     public String lisAllTodos(ModelMap model){
-        List<Todo> todos =todoService.findByUserName("jongbeom");
+        String username = getLoggedinUsername();
+        List<Todo> todos =todoService.findByUserName(username);
         model.addAttribute("todos",todos);
 
         return "listTodos";
     }
+
+
 
     //투두 리스트 추가
     // http://localhost:8080/add-todo로 갔을 때 출력
@@ -39,7 +44,7 @@ public class TodoController {
     @RequestMapping(value = "add-todo",method = RequestMethod.GET)
     public String showNewTodoPage(ModelMap model){
         //생성 기본값 설정
-        String username = (String) model.get("name");
+        String username = getLoggedinUsername();
         Todo todo = new Todo(0,username,"기본 설명",LocalDate.now().plusWeeks(1),false);
         model.put("todo",todo);
         return "todo";
@@ -54,7 +59,7 @@ public class TodoController {
             return "todo";
         }
 
-        String name = (String) model.get("name");
+        String name = getLoggedinUsername();
         todoService.addTodo(name,todo.getDescription(), todo.getTargetDate(),false);
         return "redirect:list-todos"; //로직 중복을 막기위한 리디렉션 사용 (URL로 호출해야한다.)
     }
@@ -90,13 +95,18 @@ public class TodoController {
             return "todo";
         }
 
-        String username = (String) model.get("name");
+        String username = getLoggedinUsername();
         todo.setUsername(username);
         todoService.updateTodo(todo);
         return "redirect:list-todos"; //로직 중복을 막기위한 리디렉션 사용 (URL로 호출해야한다.)
     }
 
 
+    private static String getLoggedinUsername() {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication(); //현재 인증된 주체를 저장
+        return authentication.getName();
+    }
 
 
     // 요청 모델 세션

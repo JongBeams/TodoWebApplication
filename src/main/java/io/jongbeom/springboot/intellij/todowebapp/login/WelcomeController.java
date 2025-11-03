@@ -1,5 +1,7 @@
 package io.jongbeom.springboot.intellij.todowebapp.login;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +19,16 @@ public class WelcomeController {
     // MVC - Model : 컨트롤러에서 jsp로 전달하려 할 때 그것을 모델에 넣어서 전달
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public  String gotoWelcomePage(ModelMap model){
-        model.put("name","jongbeom");
+        model.put("name",getLoggedinUsername());
         return "welcome";
     }
-
-
+    
+    // 스프링 세큐리티 이용한 유저명 호출
+    private String getLoggedinUsername(){
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication(); //현재 인증된 주체를 저장
+        return authentication.getName();
+    }
 
 
 
