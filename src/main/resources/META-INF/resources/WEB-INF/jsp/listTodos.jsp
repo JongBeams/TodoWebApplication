@@ -6,6 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>투 두 리스트</title>
+    <!--스타일 시트 파일은 헤드에 추가-->
+    <!--경로 : webjars\bootstrap\5.1.3\css\bootstrap.min.css-->
+    <link href="webjars\bootstrap\5.1.3\css\bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 <h1>장종범 웹</h1>
@@ -34,5 +38,10 @@
     </tbody>
 </table>
 <div></div>
+<!--자바 스크립트 파일은 바디를 닫기전 script로 추가 -->
+<!--경로 : webjars\bootstrap\5.1.3\js\bootstrap.min.js-->
+<!--경로 : webjars\jquery\3.6.0\jquery.min.js-->
+<script src="webjars\bootstrap\5.1.3\js\bootstrap.min.js"></script>
+<script src="webjars\jquery\3.6.0\jquery.min.js"></script>
 </body>
 </html>
