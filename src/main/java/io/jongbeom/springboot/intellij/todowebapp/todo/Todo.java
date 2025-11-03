@@ -1,5 +1,7 @@
 package io.jongbeom.springboot.intellij.todowebapp.todo;
 
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 //Todo Bean 작성
@@ -13,6 +15,9 @@ public class Todo {
 
     private int id;
     private String username;
+
+    //최소 크기 설정 등의 사이즈 관련 설정 가능한 어노테이션
+    @Size(min = 8, message = "최소 10자 이상 입력하세요.")
     private String description;
     private LocalDate targetDate;
     private boolean done;

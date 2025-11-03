@@ -1,7 +1,9 @@
 package io.jongbeom.springboot.intellij.todowebapp.todo;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -36,13 +38,24 @@ public class TodoController {
     //GET,POST 메소드 추가
     @RequestMapping(value = "add-todo",method = RequestMethod.GET)
     public String showNewTodoPage(ModelMap model){
+        //생성 기본값 설정
+        String username = (String) model.get("name");
+        Todo todo = new Todo(0,username,"기본 설명",LocalDate.now().plusWeeks(1),false);
+        model.put("todo",todo);
         return "todo";
     }
 
     @RequestMapping(value = "add-todo",method = RequestMethod.POST)
-    public String addNewTodo(@RequestParam String description,ModelMap model){
+    //commend bean(양식 보조 개체) 폼 데이터를 받아서 처리하는 객체, 사용자가 입력한 데이터를 Java 객체로 자동 매핑해주는 역할
+    public String addNewTodo(ModelMap model, @Valid Todo todo, BindingResult result){// Todo bean 직접 바인딩, 해당 방식을 jsp에서 사용하려면 form 추가 필요
+        //Bean을 바인딩 하는 곳에 @Valid 어노테이션 사용 시 바인딩 전 @Size 등의 검증을 하게 된다.
+
+        if(result.hasErrors()){
+            return "todo";
+        }
+
         String name = (String) model.get("name");
-        todoService.addTodo(name,description, LocalDate.now().plusWeeks(1),false);
+        todoService.addTodo(name,todo.getDescription(), LocalDate.now().plusWeeks(1),false);
         return "redirect:list-todos"; //로직 중복을 막기위한 리디렉션 사용 (URL로 호출해야한다.)
     }
 
