@@ -9,6 +9,7 @@
         </ul>
     </div>
     <ul class="navbar-nav">
+        <!--spring security에서는 기본적을 로그인 로그아웃 링크를 제공한다.-->
         <li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
     </ul>
 </nav>
