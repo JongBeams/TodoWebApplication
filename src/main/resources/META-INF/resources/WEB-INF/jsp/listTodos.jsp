@@ -22,19 +22,22 @@
 <table class="table">
     <thead>
     <tr><!--제목 행-->
-        <th>id</th>
         <th>내용</th>
         <th>목표일</th>
         <th>완료 여부</th>
+        <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody><!--데이터는 모드 tbody 안에-->
     <c:forEach items="${todos}" var ="todo">
         <tr>
-            <td>${todo.id}</td>
             <td>${todo.description}</td>
             <td>${todo.targetDate}</td>
             <td>${todo.done}</td>
+            <!--쿼리 파라미터를 사용해 아이디 호출-->
+            <td><a href="update-todo?id=${todo.id}" class="btn btn-success">변경</a></td>
+            <td><a href="delete-todo?id=${todo.id}" class="btn btn-warning">삭제</a></td>
         </tr>
     </c:forEach>
     </tbody>

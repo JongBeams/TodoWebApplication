@@ -1,10 +1,12 @@
 package io.jongbeom.springboot.intellij.todowebapp.todo;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 //정적 변수 리스트로 우선 저장
 @Service
@@ -27,6 +29,34 @@ public class TodoService {
         Todo todo= new Todo(todosCount++,username,description,targetDate,done);
         todos.add(todo);
     }
+
+    public void deleteById(int id){
+        //조건 지역 변수
+        //todo.getId() == id 일 때
+        Predicate<? super Todo> predicate   // 모든 Todo의 id가 조건에 매칭되는지 확인 후 조건에 매칭되는 Todo만 호출
+                = todo -> todo.getId() == id; //람다 사용
+        todos.removeIf(predicate);
+        //stream 활용 id값 자동 감소 시키기 (원래는 ID값이 아닌 문서 수를 표시하는 값에 필요)
+        /*todos.stream()
+                .filter(todo -> todo.getId() > id)
+                .forEach(todo -> todo.setId(todo.getId() - 1));
+        todosCount--;*/
+
+
+    }
+
+    public Todo findById(int id) {
+        Predicate<? super Todo> predicate
+                = todo -> todo.getId() == id; //람다 사용
+        Todo todo=todos.stream().filter(predicate).findFirst().get(); //첫번째 결과 값 가져오기
+        return todo;
+    }
+
+    public void updateTodo(@Valid Todo todo) {
+        deleteById(todo.getId());
+        todos.add(todo);
+    }
+
 
 
 }
