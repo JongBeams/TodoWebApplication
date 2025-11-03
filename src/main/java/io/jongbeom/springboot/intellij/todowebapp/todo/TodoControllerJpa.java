@@ -6,30 +6,36 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
 
-//@Controller
+@Controller
 //기본적으로 입력된 정보는 페이지 이동 시 유지되지않는다. 이를 더 길게 유지하려면 세션을 사용해야 한다.
 //유지하려는 값을 추가
 @SessionAttributes("name")
-public class TodoController {
+public class TodoControllerJpa {
 
-    private TodoService todoService;
 
-    public TodoController(TodoService todoService) {
+    public TodoControllerJpa(TodoRepository todoRepository) {
         super();
-        this.todoService = todoService;
+        this.todoRepository=todoRepository;
     }
+
+    private TodoRepository todoRepository;
+
+
 
     // http://localhost:8080/list-todos로 갔을 때 출력
     // 로그인 성공시 하이퍼링크 클릭으로 사용
     @RequestMapping("list-todos")
     public String lisAllTodos(ModelMap model){
         String username = getLoggedinUsername();
-        List<Todo> todos =todoService.findByUserName(username);
+        List<Todo> todos =todoRepository.findByUsername(username);
         model.addAttribute("todos",todos);
 
         return "listTodos";
@@ -59,8 +65,9 @@ public class TodoController {
             return "todo";
         }
 
-        String name = getLoggedinUsername();
-        todoService.addTodo(name,todo.getDescription(), todo.getTargetDate(),false);
+        String username = getLoggedinUsername();
+        todo.setUsername(username);
+        todoRepository.save(todo);
         return "redirect:list-todos"; //로직 중복을 막기위한 리디렉션 사용 (URL로 호출해야한다.)
     }
 
@@ -70,7 +77,7 @@ public class TodoController {
     @RequestMapping("delete-todo")
     public String deleteTodo(@RequestParam int id){
         // 투두 삭제
-        todoService.deleteById(id);
+        todoRepository.deleteById(id);
         return "redirect:list-todos";
     }
 
@@ -80,7 +87,7 @@ public class TodoController {
     @RequestMapping(value = "update-todo",method = RequestMethod.GET)
     public String showUpdateTodopage(@RequestParam int id,ModelMap model){
         // 투두 변경
-        Todo todo = todoService.findById(id);
+        Todo todo = todoRepository.findById(id).get();
         model.addAttribute("todo",todo);
         //todoService.deleteById(id);
         return "todo";
@@ -97,7 +104,7 @@ public class TodoController {
 
         String username = getLoggedinUsername();
         todo.setUsername(username);
-        todoService.updateTodo(todo);
+        todoRepository.save(todo);
         return "redirect:list-todos"; //로직 중복을 막기위한 리디렉션 사용 (URL로 호출해야한다.)
     }
 

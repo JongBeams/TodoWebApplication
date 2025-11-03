@@ -1,11 +1,29 @@
 package io.jongbeom.springboot.intellij.todowebapp.todo;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 //Todo Bean 작성
+@Entity //사용시 해당 Bean이 DB table에 매핑
 public class Todo {
+
+    public Todo() {
+
+    }
+
+    public Todo(int id, String username, String description, LocalDate targetDate, boolean done) {
+        super();
+        this.id = id;
+        this.username = username;
+        this.description = description;
+        this.targetDate = targetDate;
+        this.done = done;
+    }
 
     //id
     //유저명
@@ -13,7 +31,11 @@ public class Todo {
     //목표일
     //완료
 
+    @Id
+    @GeneratedValue // 프라이머리키 설정
     private int id;
+
+    @Column
     private String username;
 
     //최소 크기 설정 등의 사이즈 관련 설정 가능한 어노테이션
@@ -23,13 +45,7 @@ public class Todo {
     private boolean done;
 
 
-    public Todo(int id, String username, String description, LocalDate targetDate, boolean done) {
-        this.id = id;
-        this.username = username;
-        this.description = description;
-        this.targetDate = targetDate;
-        this.done = done;
-    }
+
 
     public int getId() {
         return id;
