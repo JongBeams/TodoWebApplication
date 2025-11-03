@@ -2,11 +2,9 @@ package io.jongbeom.springboot.intellij.todowebapp.todo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -42,9 +40,9 @@ public class TodoController {
     }
 
     @RequestMapping(value = "add-todo",method = RequestMethod.POST)
-    public String addNewTodo(ModelMap model){
-        List<Todo> todos =todoService.findByUserName("jongbeom");
-        model.addAttribute("todos",todos);
+    public String addNewTodo(@RequestParam String description,ModelMap model){
+        String name = (String) model.get("name");
+        todoService.addTodo(name,description, LocalDate.now().plusWeeks(1),false);
         return "redirect:list-todos"; //로직 중복을 막기위한 리디렉션 사용 (URL로 호출해야한다.)
     }
 

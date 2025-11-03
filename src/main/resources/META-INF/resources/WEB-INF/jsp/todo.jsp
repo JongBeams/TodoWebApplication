@@ -12,7 +12,8 @@
     <div class="container">
         <h1>투 두 리스트 계획 추가</h1>
         <form method="post">
-            Description: <input type="text" name="description">
+            Description: <input type="text" name="description"
+                                required="required"/>
             <input type="submit" class="btn-success"/>
         </form>
     </div>
