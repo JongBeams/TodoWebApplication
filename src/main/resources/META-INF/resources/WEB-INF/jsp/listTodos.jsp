@@ -12,12 +12,13 @@
 
 </head>
 <body>
+<div class="container">
 <h1>장종범 웹</h1>
 <h2>${name}의 투 두 리스트</h2>
 <hr>
 <h1>너의 지금 투 두 리스트는?</h1>
 <!-- 테이블 구문 작성 방법-->
-<table>
+<table class="table">
     <thead>
     <tr><!--제목 행-->
         <th>id</th>
@@ -37,7 +38,9 @@
     </c:forEach>
     </tbody>
 </table>
-<div></div>
+<a href="add-todo" class ="btn btn-success">추가</a>
+
+</div>
 <!--자바 스크립트 파일은 바디를 닫기전 script로 추가 -->
 <!--경로 : webjars\bootstrap\5.1.3\js\bootstrap.min.js-->
 <!--경로 : webjars\jquery\3.6.0\jquery.min.js-->

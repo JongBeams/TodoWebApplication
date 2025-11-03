@@ -3,6 +3,7 @@ package io.jongbeom.springboot.intellij.todowebapp.todo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -22,12 +23,29 @@ public class TodoController {
     }
 
     // http://localhost:8080/list-todos로 갔을 때 출력
+    // 로그인 성공시 하이퍼링크 클릭으로 사용
     @RequestMapping("list-todos")
     public String lisAllTodos(ModelMap model){
         List<Todo> todos =todoService.findByUserName("jongbeom");
         model.addAttribute("todos",todos);
 
         return "listTodos";
+    }
+
+    //투두 리스트 추가
+    // http://localhost:8080/add-todo로 갔을 때 출력
+    // http://localhost:8080/list-todos에서 버튼으로 이동
+    //GET,POST 메소드 추가
+    @RequestMapping(value = "add-todo",method = RequestMethod.GET)
+    public String showNewTodoPage(ModelMap model){
+        return "todo";
+    }
+
+    @RequestMapping(value = "add-todo",method = RequestMethod.POST)
+    public String addNewTodo(ModelMap model){
+        List<Todo> todos =todoService.findByUserName("jongbeom");
+        model.addAttribute("todos",todos);
+        return "redirect:list-todos"; //로직 중복을 막기위한 리디렉션 사용 (URL로 호출해야한다.)
     }
 
     // 요청 모델 세션
